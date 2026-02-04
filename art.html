@@ -1,0 +1,432 @@
+<!DOCTYPE html>
+<html lang="th">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ศิลปะและสถาปัตยกรรมล้านนา | ล้านนาถิ่นไทยงาม</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Sarabun:wght@300;400;500;600;700&family=Sriracha&family=Charm:wght@400;700&family=Maitree:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/responsive.css">
+    <style>
+        /* Art Page Specific Styles */
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: var(--spacing-lg);
+            margin-top: var(--spacing-xl);
+        }
+
+        .gallery-item {
+            position: relative;
+            border-radius: var(--radius-lg);
+            overflow: hidden;
+            box-shadow: var(--shadow-md);
+            transition: all var(--transition-normal);
+            background-color: var(--bg-card);
+        }
+
+        .gallery-item:hover {
+            transform: translateY(-8px);
+            box-shadow: var(--shadow-xl);
+        }
+
+        .gallery-img {
+            width: 100%;
+            height: 250px;
+            object-fit: cover;
+            transition: transform var(--transition-slow);
+        }
+
+        .gallery-item:hover .gallery-img {
+            transform: scale(1.05);
+        }
+
+        .gallery-overlay {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: linear-gradient(to top, rgba(0, 0, 0, 0.8), transparent);
+            color: white;
+            padding: var(--spacing-lg);
+            transform: translateY(100%);
+            transition: transform var(--transition-normal);
+        }
+
+        .gallery-item:hover .gallery-overlay {
+            transform: translateY(0);
+        }
+
+        .gallery-overlay h3 {
+            color: white;
+            margin-bottom: var(--spacing-xs);
+            font-size: var(--fs-lg);
+        }
+
+        .gallery-overlay p {
+            color: rgba(255, 255, 255, 0.9);
+            font-size: var(--fs-sm);
+            margin: 0;
+        }
+
+        .architecture-types {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: var(--spacing-xl);
+            margin-top: var(--spacing-xl);
+        }
+
+        .architecture-card {
+            background-color: var(--bg-card);
+            border-radius: var(--radius-lg);
+            padding: var(--spacing-lg);
+            box-shadow: var(--shadow-md);
+            transition: all var(--transition-normal);
+        }
+
+        .architecture-card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .architecture-icon {
+            width: 70px;
+            height: 70px;
+            border-radius: var(--radius-full);
+            background-color: rgba(183, 28, 28, 0.1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: var(--spacing-md);
+        }
+
+        .architecture-icon i {
+            font-size: var(--fs-2xl);
+            color: var(--primary-color);
+        }
+
+        .patterns-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: var(--spacing-lg);
+            margin-top: var(--spacing-xl);
+        }
+
+        .pattern-item {
+            text-align: center;
+            padding: var(--spacing-lg);
+            background-color: var(--bg-card);
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-md);
+            transition: all var(--transition-normal);
+        }
+
+        .pattern-item:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .pattern-symbol {
+            font-size: var(--fs-3xl);
+            margin-bottom: var(--spacing-md);
+            color: var(--primary-color);
+        }
+
+        .pattern-image {
+            width: 100px;
+            height: 100px;
+            margin: 0 auto var(--spacing-md);
+            background-color: var(--bg-light);
+            border-radius: var(--radius-md);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: var(--fs-3xl);
+            color: var(--primary-color);
+        }
+
+        .video-container {
+            position: relative;
+            padding-bottom: 56.25%;
+            /* 16:9 */
+            height: 0;
+            overflow: hidden;
+            border-radius: var(--radius-lg);
+            margin-top: var(--spacing-xl);
+            box-shadow: var(--shadow-md);
+        }
+
+        .video-container iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+
+        .art-characteristics {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: var(--spacing-lg);
+            margin-top: var(--spacing-xl);
+        }
+
+        .characteristic-item {
+            background-color: var(--bg-card);
+            padding: var(--spacing-lg);
+            border-radius: var(--radius-lg);
+            border-left: 4px solid var(--primary-color);
+            box-shadow: var(--shadow-sm);
+            transition: all var(--transition-normal);
+        }
+
+        .characteristic-item:hover {
+            transform: translateX(5px);
+            box-shadow: var(--shadow-md);
+        }
+
+        .characteristic-item h4 {
+            color: var(--primary-color);
+            margin-bottom: var(--spacing-sm);
+            font-size: var(--fs-lg);
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Header -->
+    <header>
+        <div class="nav-container container">
+            <nav>
+                <ul class="nav-links" id="navLinks">
+                    <li><a href="index.html"><i class="fas fa-home"></i> หน้าแรก</a></li>
+                    <li><a href="history.html"><i class="fas fa-landmark"></i> ประวัติและอารยธรรม</a></li>
+                    <li><a href="art.html" class="active"><i class="fas fa-palette"></i> ศิลปะและสถาปัตยกรรม</a></li>
+                    <li><a href="tradition.html"><i class="fas fa-hands-praying"></i> ประเพณีและวิถีชีวิต</a></li>
+                    <li><a href="culture.html"><i class="fas fa-music"></i> อาหาร ดนตรี และหัตถกรรม</a></li>
+                    <li><a href="tourism.html"><i class="fas fa-map-marked-alt"></i> แหล่งท่องเที่ยว</a></li>
+                </ul>
+            </nav>
+
+        </div>
+    </header>
+
+    <!-- Search Bar -->
+    <div class="search-bar" id="searchBar">
+        <div class="container">
+            <form class="search-form">
+                <input type="text" placeholder="ค้นหาศิลปะล้านนา..." class="search-input">
+                <button type="submit" class="search-btn">
+                    <i class="fas fa-search"></i>
+                </button>
+                <button type="button" class="search-close" id="searchClose">
+                    <i class="fas fa-times"></i>
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Page Hero -->
+    <section class="page-hero">
+        <div class="page-hero-bg"
+            style="background-image: url('https://images.unsplash.com/photo-1588666309990-d68f08e3d4c6?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80');">
+        </div>
+        <div class="page-hero-overlay"></div>
+        <div class="container">
+            <div class="page-hero-content">
+                <nav class="breadcrumb">
+                    <a href="index.html">หน้าแรก</a>
+                    <i class="fas fa-chevron-right"></i>
+                    <span>ศิลปะและสถาปัตยกรรม</span>
+                </nav>
+                <h1 class="page-hero-title">ศิลปะและสถาปัตยกรรมล้านนา</h1>
+                <p class="page-hero-subtitle">ความงดงามแห่งพุทธศิลป์และสถาปัตยกรรมอันเป็นเอกลักษณ์</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Main Content -->
+    <main class="page-content">
+        <div class="container">
+            <!-- Architecture Types -->
+            <section class="section">
+                <div class="section-header">
+                    <h2 class="section-title">สถาปัตยกรรมล้านนา</h2>
+                    <p class="section-subtitle">เอกลักษณ์ด้านการออกแบบและโครงสร้าง</p>
+                </div>
+
+                <div class="architecture-types">
+                    <div class="architecture-card">
+                        <div class="architecture-icon">
+                            <i class="fas fa-place-of-worship"></i>
+                        </div>
+                        <h3>วิหารล้านนา</h3>
+                        <p>หลังคาซ้อนชั้นลดหลั่นกัน (หลังคาทรงจั่ว) มุขหน้าทรงจั่วลาดต่ำกว่า 45 องศา
+                            มีหน้าบันประดับลวดลายไม้แกะสลัก มักมี "ไขราปีกนก" (โครงหลังคาที่ยื่นออกมา)</p>
+                    </div>
+
+                    <div class="architecture-card">
+                        <div class="architecture-icon">
+                            <i class="fas fa-chess-rook"></i>
+                        </div>
+                        <h3>เจดีย์ทรงล้านนา</h3>
+                        <p>เจดีย์ทรงระฆัง ฐานสี่เหลี่ยมซ้อนชั้น องค์ระฆังคล้ายพุ่มข้าวบิณฑ์ ปลียอดสูงเด่น
+                            เป็นเอกลักษณ์เฉพาะของล้านนา เช่น เจดีย์วัดพระธาตุดอยสุเทพ</p>
+                    </div>
+
+                    <div class="architecture-card">
+                        <div class="architecture-icon">
+                            <i class="fas fa-hammer"></i>
+                        </div>
+                        <h3>งานแกะสลักไม้</h3>
+                        <p>ลวดลายพรรณพฤกษา นาค ดอกบัว เทวดา และสัตว์ในตำนาน ใช้ประดับหน้าบัน หน้าต่าง ประตู
+                            และเสาในวิหาร</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Gallery Section -->
+            <section class="section">
+                <div class="section-header">
+                    <h2 class="section-title">ภาพตัวอย่างศิลปะล้านนา</h2>
+                    <p class="section-subtitle">คลิกที่ภาพเพื่อดูรายละเอียด</p>
+                </div>
+
+                <div class="gallery-grid">
+                    <div class="gallery-item">
+                        <img src="https://i.imgur.com/ua4NGkU.jpeg" alt="วิหารลายคำ วัดพระสิงห์" class="gallery-img"
+                            loading="lazy">
+                        <div class="gallery-overlay">
+                            <h3>วิหารลายคำ วัดพระสิงห์</h3>
+                            <p>ศิลปะล้านนาผสมพม่า หลังคาซ้อน 3 ชั้น หน้าบันประดับกระจกสี</p>
+                        </div>
+                    </div>
+
+                    <div class="gallery-item">
+                        <img src="https://images.unsplash.com/photo-1548013146-72479768bada?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80"
+                            alt="เจดีย์ทรงระฆัง" class="gallery-img" loading="lazy">
+                        <div class="gallery-overlay">
+                            <h3>เจดีย์ทรงระฆัง</h3>
+                            <p>เจดีย์ศิลปะล้านนาพื้นเมือง ฐานสี่เหลี่ยม องค์ระฆัง คล้ายพุ่มข้าวบิณฑ์</p>
+                        </div>
+                    </div>
+
+                    <div class="gallery-item">
+                        <img src="https://fg.lnwfile.com/_/fg/_raw/rz/g0/81.jpg" alt="งานแกะสลักไม้ล้านนา"
+                            class="gallery-img" loading="lazy">
+                        <div class="gallery-overlay">
+                            <h3>งานแกะสลักไม้ล้านนา</h3>
+                            <p>ลายพรรณพฤกษา นาค และเทพพนม ตามคติความเชื่อล้านนา</p>
+                        </div>
+                    </div>
+
+                    <div class="gallery-item">
+                        <img src="https://theisaanrecord.co/wp-content/uploads/2017/11/Mural201.jpg-1024x966-1.jpeg"
+                            alt="ฮูปแต้ม (จิตรกรรมฝาผนัง)" class="gallery-img" loading="lazy">
+                        <div class="gallery-overlay">
+                            <h3>ฮูปแต้มล้านนา</h3>
+                            <p>จิตรกรรมฝาผนังล้านนา บอกเล่าเรื่องราวพุทธประวัติและชาดก</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Patterns Section -->
+            <section class="section">
+                <div class="section-header">
+                    <h2 class="section-title">ลวดลายประจำล้านนา</h2>
+                    <p class="section-subtitle">ความหมายและสัญลักษณ์ในลวดลายล้านนา</p>
+                </div>
+
+                <div class="patterns-grid">
+                    <div class="pattern-item">
+                        <div class="pattern-image">
+                            <i class="fas fa-dragon"></i>
+                        </div>
+                        <h3>ลายนาค</h3>
+                        <p>สัญลักษณ์ของความอุดมสมบูรณ์และความเชื่อเรื่องน้ำ ปรากฏตามบันไดวัดและราวบันได</p>
+                    </div>
+
+                    <div class="pattern-item">
+                        <div class="pattern-image">
+                            <i class="fas fa-feather-alt"></i>
+                        </div>
+                        <h3>ลายกนก</h3>
+                        <p>ลายไทยล้านนาที่เลียนแบบเปลวไฟ ใช้ประดับงานไม้และโลหะ</p>
+                    </div>
+
+                    <div class="pattern-item">
+                        <div class="pattern-image">
+                            <i class="fas fa-leaf"></i>
+                        </div>
+                        <h3>ลายพฤกษา</h3>
+                        <p>ลายดอกไม้ ใบไม้ พืชพันธุ์ต่างๆ แสดงถึงความอุดมสมบูรณ์ของธรรมชาติ</p>
+                    </div>
+
+                    <div class="pattern-item">
+                        <div class="pattern-image">
+                            <i class="fas fa-water"></i>
+                        </div>
+                        <h3>ลายน้ำ</h3>
+                        <p>ลายคลื่นน้ำหรือเกลียวคลื่น แสดงถึงความเชื่อเรื่องแม่น้ำและความอุดมสมบูรณ์</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Art Characteristics -->
+            <section class="section">
+                <div class="section-header">
+                    <h2 class="section-title">เอกลักษณ์ศิลปะล้านนา</h2>
+                    <p class="section-subtitle">ความโดดเด่นและอิทธิพลของศิลปะล้านนา</p>
+                </div>
+
+                <div class="art-characteristics">
+                    <div class="characteristic-item">
+                        <h4>อิทธิพลสุโขทัย</h4>
+                        <p>ได้รับอิทธิพลจากศิลปะสุโขทัยในงานพุทธศิลป์ โดยเฉพาะพระพุทธรูปทรงเครื่อง</p>
+                    </div>
+
+                    <div class="characteristic-item">
+                        <h4>อิทธิพลพม่า</h4>
+                        <p>หลังตกเป็นเมืองขึ้นพม่า ได้รับอิทธิพลทางสถาปัตยกรรมและศิลปะประดับกระจก</p>
+                    </div>
+
+                    <div class="characteristic-item">
+                        <h4>สีและวัสดุ</h4>
+                        <p>ใช้สีธรรมชาติจากดิน แร่ และพืช เช่น ดินแดง ขมิ้น ครั่ง สีดำจากเขม่า</p>
+                    </div>
+
+                    <div class="characteristic-item">
+                        <h4>งานไม้แกะสลัก</h4>
+                        <p>ใช้ไม้สักเป็นหลักในการสร้างสรรค์งานสถาปัตยกรรมและประติมากรรม</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Video Section -->
+
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <!-- ใช้ footer เดียวกับหน้าแรก -->
+    </footer>
+
+    <!-- Back to Top Button -->
+    <button class="back-to-top" id="backToTop">
+        <i class="fas fa-chevron-up"></i>
+    </button>
+
+    <script src="js/main.js"></script>
+    <script src="js/lazy-load.js"></script>
+</body>
+
+</html>

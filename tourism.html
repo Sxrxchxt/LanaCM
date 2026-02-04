@@ -1,0 +1,801 @@
+<!DOCTYPE html>
+<html lang="th">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>แหล่งท่องเที่ยววัฒนธรรมล้านนา | ล้านนาถิ่นไทยงาม</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Sarabun:wght@300;400;500;600;700&family=Sriracha&family=Charm:wght@400;700&family=Maitree:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/responsive.css">
+    <style>
+        /* Tourism Page Specific Styles */
+        .map-section {
+            position: relative;
+            height: 500px;
+            border-radius: var(--radius-lg);
+            overflow: hidden;
+            margin-top: var(--spacing-xl);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .map-container {
+            width: 100%;
+            height: 100%;
+            background-color: #e0f7fa;
+        }
+
+        .map-overlay {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background-color: var(--bg-card);
+            padding: var(--spacing-lg);
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-md);
+            max-width: 300px;
+        }
+
+        .map-legend {
+            margin-top: var(--spacing-md);
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-sm);
+            margin-bottom: var(--spacing-xs);
+        }
+
+        .legend-color {
+            width: 15px;
+            height: 15px;
+            border-radius: var(--radius-full);
+        }
+
+        .attraction-filter {
+            display: flex;
+            gap: var(--spacing-md);
+            margin-bottom: var(--spacing-xl);
+            flex-wrap: wrap;
+        }
+
+        .filter-btn {
+            padding: var(--spacing-sm) var(--spacing-lg);
+            background-color: var(--bg-light);
+            border: none;
+            border-radius: var(--radius-full);
+            font-family: var(--font-body);
+            font-size: var(--fs-base);
+            color: var(--text-medium);
+            cursor: pointer;
+            transition: all var(--transition-normal);
+        }
+
+        .filter-btn:hover {
+            background-color: var(--primary-light);
+            color: white;
+        }
+
+        .filter-btn.active {
+            background-color: var(--primary-color);
+            color: white;
+        }
+
+        .attractions-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: var(--spacing-xl);
+        }
+
+        .attraction-card {
+            background-color: var(--bg-card);
+            border-radius: var(--radius-lg);
+            overflow: hidden;
+            box-shadow: var(--shadow-md);
+            transition: all var(--transition-normal);
+        }
+
+        .attraction-card:hover {
+            transform: translateY(-8px);
+            box-shadow: var(--shadow-xl);
+        }
+
+        .attraction-image {
+            height: 250px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .attraction-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform var(--transition-slow);
+        }
+
+        .attraction-card:hover .attraction-image img {
+            transform: scale(1.1);
+        }
+
+        .attraction-badge {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            padding: var(--spacing-xs) var(--spacing-sm);
+            background-color: var(--primary-color);
+            color: white;
+            border-radius: var(--radius-full);
+            font-size: var(--fs-sm);
+            font-weight: 600;
+        }
+
+        .attraction-content {
+            padding: var(--spacing-lg);
+        }
+
+        .attraction-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: var(--spacing-md);
+        }
+
+        .attraction-distance {
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-xs);
+            color: var(--text-light);
+            font-size: var(--fs-sm);
+        }
+
+        .attraction-distance i {
+            color: var(--primary-color);
+        }
+
+        .attraction-features {
+            display: flex;
+            flex-wrap: wrap;
+            gap: var(--spacing-sm);
+            margin-top: var(--spacing-md);
+        }
+
+        .feature-tag {
+            padding: var(--spacing-xs) var(--spacing-sm);
+            background-color: var(--bg-light);
+            border-radius: var(--radius-full);
+            font-size: var(--fs-sm);
+            color: var(--text-medium);
+        }
+
+        .attraction-actions {
+            display: flex;
+            gap: var(--spacing-sm);
+            margin-top: var(--spacing-lg);
+        }
+
+        .action-btn {
+            flex: 1;
+            padding: var(--spacing-sm) var(--spacing-md);
+            text-align: center;
+            border-radius: var(--radius-md);
+            font-size: var(--fs-sm);
+            font-weight: 600;
+            text-decoration: none;
+            transition: all var(--transition-normal);
+        }
+
+        .btn-details {
+            background-color: var(--primary-color);
+            color: white;
+        }
+
+        .btn-details:hover {
+            background-color: var(--primary-dark);
+        }
+
+        .btn-direction {
+            background-color: var(--bg-light);
+            color: var(--text-medium);
+        }
+
+        .btn-direction:hover {
+            background-color: var(--border-color);
+        }
+
+        .itinerary-section {
+            background-color: var(--bg-card);
+            border-radius: var(--radius-lg);
+            padding: var(--spacing-xl);
+            margin-top: var(--spacing-xl);
+            box-shadow: var(--shadow-md);
+        }
+
+        .itinerary-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: var(--spacing-lg);
+            margin-top: var(--spacing-lg);
+        }
+
+        .itinerary-day {
+            background-color: var(--bg-light);
+            border-radius: var(--radius-lg);
+            padding: var(--spacing-lg);
+        }
+
+        .day-header {
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-sm);
+            margin-bottom: var(--spacing-md);
+        }
+
+        .day-number {
+            width: 40px;
+            height: 40px;
+            background-color: var(--primary-color);
+            color: white;
+            border-radius: var(--radius-full);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+        }
+
+        .day-activities {
+            list-style: none;
+        }
+
+        .day-activities li {
+            margin-bottom: var(--spacing-sm);
+            padding-left: var(--spacing-md);
+            position: relative;
+        }
+
+        .day-activities li::before {
+            content: '✓';
+            position: absolute;
+            left: 0;
+            color: var(--primary-color);
+            font-weight: bold;
+        }
+
+        .tips-section {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: var(--spacing-lg);
+            margin-top: var(--spacing-xl);
+        }
+
+        .tip-card {
+            background-color: var(--bg-card);
+            padding: var(--spacing-lg);
+            border-radius: var(--radius-lg);
+            border-left: 4px solid var(--accent-color);
+            box-shadow: var(--shadow-sm);
+        }
+
+        .tip-icon {
+            font-size: var(--fs-2xl);
+            color: var(--accent-color);
+            margin-bottom: var(--spacing-md);
+        }
+
+        .search-box {
+            background-color: var(--bg-card);
+            border-radius: var(--radius-lg);
+            padding: var(--spacing-xl);
+            margin-top: var(--spacing-xl);
+            box-shadow: var(--shadow-md);
+        }
+
+        .search-form-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: var(--spacing-md);
+            margin-top: var(--spacing-lg);
+        }
+
+        .search-input-group {
+            display: flex;
+            flex-direction: column;
+            gap: var(--spacing-xs);
+        }
+
+        .search-input-group label {
+            font-weight: 600;
+            color: var(--text-dark);
+        }
+
+        .search-input-group select,
+        .search-input-group input {
+            padding: var(--spacing-sm) var(--spacing-md);
+            border: 2px solid var(--border-color);
+            border-radius: var(--radius-md);
+            font-family: var(--font-body);
+            font-size: var(--fs-base);
+            background-color: var(--bg-white);
+        }
+
+        .search-input-group select:focus,
+        .search-input-group input:focus {
+            outline: none;
+            border-color: var(--primary-color);
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Header -->
+    <header>
+        <div class="nav-container container">
+
+            <nav>
+                <ul class="nav-links" id="navLinks">
+                    <li><a href="index.html"><i class="fas fa-home"></i> หน้าแรก</a></li>
+                    <li><a href="history.html"><i class="fas fa-landmark"></i> ประวัติและอารยธรรม</a></li>
+                    <li><a href="art.html"><i class="fas fa-palette"></i> ศิลปะและสถาปัตยกรรม</a></li>
+                    <li><a href="tradition.html"><i class="fas fa-hands-praying"></i> ประเพณีและวิถีชีวิต</a></li>
+                    <li><a href="culture.html"><i class="fas fa-music"></i> อาหาร ดนตรี และหัตถกรรม</a></li>
+                    <li><a href="tourism.html" class="active"><i class="fas fa-map-marked-alt"></i> แหล่งท่องเที่ยว</a>
+                    </li>
+                </ul>
+            </nav>
+
+        </div>
+    </header>
+
+    <!-- Search Bar -->
+    <div class="search-bar" id="searchBar">
+        <div class="container">
+            <form class="search-form">
+                <input type="text" placeholder="ค้นหาแหล่งท่องเที่ยว..." class="search-input">
+                <button type="submit" class="search-btn">
+                    <i class="fas fa-search"></i>
+                </button>
+                <button type="button" class="search-close" id="searchClose">
+                    <i class="fas fa-times"></i>
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Page Hero -->
+    <section class="page-hero">
+        <div class="page-hero-bg"
+            style="background-image: url('https://images.unsplash.com/photo-1528181304800-259b08848526?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80');">
+        </div>
+        <div class="page-hero-overlay"></div>
+        <div class="container">
+            <div class="page-hero-content">
+                <nav class="breadcrumb">
+                    <a href="index.html">หน้าแรก</a>
+                    <i class="fas fa-chevron-right"></i>
+                    <span>แหล่งท่องเที่ยว</span>
+                </nav>
+                <h1 class="page-hero-title">แหล่งท่องเที่ยววัฒนธรรมล้านนา</h1>
+                <p class="page-hero-subtitle">สัมผัสวัฒนธรรมล้านนาด้วยตัวเอง ณ สถานที่สำคัญในเชียงใหม่</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Main Content -->
+    <main class="page-content">
+        <div class="container">
+            <!-- Map Section -->
+
+            <!-- Filter and Attractions -->
+            <section class="section">
+                <div class="section-header">
+                    <h2 class="section-title">แหล่งท่องเที่ยววัฒนธรรมล้านนา</h2>
+                    <p class="section-subtitle">เลือกสถานที่ที่สนใจเพื่อเรียนรู้เพิ่มเติม</p>
+                </div>
+
+                <div class="attraction-filter">
+                    <button class="filter-btn active" data-filter="all">ทั้งหมด</button>
+                    <button class="filter-btn" data-filter="temple">วัดและศาสนสถาน</button>
+                    <button class="filter-btn" data-filter="museum">พิพิธภัณฑ์</button>
+                    <button class="filter-btn" data-filter="craft">แหล่งหัตถกรรม</button>
+                    <button class="filter-btn" data-filter="community">ชุมชนวัฒนธรรม</button>
+                </div>
+
+                <div class="attractions-grid">
+                    <!-- วัดพระธาตุดอยสุเทพ -->
+                    <div class="attraction-card" data-category="temple">
+                        <div class="attraction-image">
+                            <img src="https://blog.bangkokair.com/wp-content/uploads/2025/10/01_wat-phra-that-doi-suthep-travel-guide.jpg"
+                                alt="วัดพระธาตุดอยสุเทพ" loading="lazy">
+                            <span class="attraction-badge">วัดสำคัญ</span>
+                        </div>
+                        <div class="attraction-content">
+                            <div class="attraction-header">
+                                <div>
+                                    <h3>วัดพระธาตุดอยสุเทพ</h3>
+                                    <div class="attraction-distance">
+                                        <i class="fas fa-road"></i>
+                                        <span>ห่างจากตัวเมือง 16 กม.</span>
+                                    </div>
+                                </div>
+                                <div style="color: gold;">
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star-half-alt"></i>
+                                </div>
+                            </div>
+                            <p>วัดคู่บ้านคู่เมืองเชียงใหม่ เจดีย์ศิลปะล้านนาสูง 24 เมตร ฉัตรทองคำ 11 ชั้น สร้างปี พ.ศ.
+                                1929 ตั้งอยู่บนดอยสุเทพสูง 1,056 เมตร</p>
+                            <div class="attraction-features">
+                                <span class="feature-tag">สถาปัตยกรรมล้านนา</span>
+                                <span class="feature-tag">จุดชมวิว</span>
+                                <span class="feature-tag">เส้นทางนาคบันได</span>
+                            </div>
+
+                        </div>
+                    </div>
+
+                    <!-- วัดพระสิงห์ -->
+                    <div class="attraction-card" data-category="temple">
+                        <div class="attraction-image">
+                            <img src="data:image/jpeg;base64,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"
+                                alt="วัดพระสิงห์" loading="lazy">
+                            <span class="attraction-badge">อยู่ในเมือง</span>
+                        </div>
+                        <div class="attraction-content">
+                            <div class="attraction-header">
+                                <div>
+                                    <h3>วัดพระสิงห์</h3>
+                                    <div class="attraction-distance">
+                                        <i class="fas fa-road"></i>
+                                        <span>ใจกลางเมืองเชียงใหม่</span>
+                                    </div>
+                                </div>
+                                <div style="color: gold;">
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                </div>
+                            </div>
+                            <p>ประดิษฐานพระพุทธสิหิงค์ วิหารลายคำศิลปะล้านนาผสมพม่า หลังคาซ้อน 3 ชั้น
+                                หน้าบันประดับกระจกสีสวยงาม</p>
+                            <div class="attraction-features">
+                                <span class="feature-tag">วิหารลายคำ</span>
+                                <span class="feature-tag">พระพุทธสิหิงค์</span>
+                                <span class="feature-tag">งานไม้แกะสลัก</span>
+                            </div>
+
+                        </div>
+                    </div>
+
+                    <!-- พิพิธภัณฑ์สถานแห่งชาติเชียงใหม่ -->
+                    <div class="attraction-card" data-category="museum">
+                        <div class="attraction-image">
+                            <img src="https://db.sac.or.th/museum/images/Museum/688/SAC-1.jpg"
+                                alt="พิพิธภัณฑ์สถานแห่งชาติเชียงใหม่" loading="lazy">
+                            <span class="attraction-badge">พิพิธภัณฑ์</span>
+                        </div>
+                        <div class="attraction-content">
+                            <div class="attraction-header">
+                                <div>
+                                    <h3>พิพิธภัณฑ์สถานแห่งชาติเชียงใหม่</h3>
+                                    <div class="attraction-distance">
+                                        <i class="fas fa-road"></i>
+                                        <span>ห่างจากตัวเมือง 5 กม.</span>
+                                    </div>
+                                </div>
+                                <div style="color: gold;">
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                </div>
+                            </div>
+                            <p>แหล่งเรียนรู้ประวัติศาสตร์และศิลปวัฒนธรรมล้านนา จัดแสดงโบราณวัตถุ ศิลปวัตถุล้านนา
+                                และนิทรรศการหมุนเวียน</p>
+                            <div class="attraction-features">
+                                <span class="feature-tag">โบราณวัตถุ</span>
+                                <span class="feature-tag">นิทรรศการ</span>
+                                <span class="feature-tag">เรียนรู้ประวัติศาสตร์</span>
+                            </div>
+
+                        </div>
+                    </div>
+
+                    <!-- บ่อสร้าง ร่มโบราณ -->
+                    <div class="attraction-card" data-category="craft">
+                        <div class="attraction-image">
+                            <img src="https://wikicommunity.sac.or.th/files/community/373/thumb-6490789d09fce.jpg"
+                                alt="บ่อสร้าง ร่มโบราณ" loading="lazy">
+                            <span class="attraction-badge">หัตถกรรม</span>
+                        </div>
+                        <div class="attraction-content">
+                            <div class="attraction-header">
+                                <div>
+                                    <h3>หมู่บ้านบ่อสร้าง</h3>
+                                    <div class="attraction-distance">
+                                        <i class="fas fa-road"></i>
+                                        <span>ห่างจากตัวเมือง 9 กม.</span>
+                                    </div>
+                                </div>
+                                <div style="color: gold;">
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star-half-alt"></i>
+                                </div>
+                            </div>
+                            <p>ศูนย์ผลิตร่มบ่อสร้าง งานหัตถกรรมพื้นบ้านลือชื่อของเชียงใหม่ ทำจากกระดาษสาและไม้ไผ่
+                                ลวดลายสีสันสดใส</p>
+                            <div class="attraction-features">
+                                <span class="feature-tag">ร่มกระดาษสา</span>
+                                <span class="feature-tag">หัตถกรรมพื้นบ้าน</span>
+                                <span class="feature-tag">ซื้อของฝาก</span>
+                            </div>
+
+                        </div>
+                    </div>
+
+                    <!-- เวียงกุมกาม -->
+                    <div class="attraction-card" data-category="temple">
+                        <div class="attraction-image">
+                            <img src="data:image/jpeg;base64,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"
+                                alt="เวียงกุมกาม" loading="lazy">
+                            <span class="attraction-badge">โบราณสถาน</span>
+                        </div>
+                        <div class="attraction-content">
+                            <div class="attraction-header">
+                                <div>
+                                    <h3>เวียงกุมกาม</h3>
+                                    <div class="attraction-distance">
+                                        <i class="fas fa-road"></i>
+                                        <span>ห่างจากตัวเมือง 5 กม.</span>
+                                    </div>
+                                </div>
+                                <div style="color: gold;">
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                </div>
+                            </div>
+                            <p>เมืองโบราณอายุ 700 ปี ที่จมอยู่ใต้ตะกอนดินโคลนจากแม่น้ำปิง
+                                มีวัดร้างและซากโบราณสถานให้ศึกษา</p>
+                            <div class="attraction-features">
+                                <span class="feature-tag">เมืองโบราณ</span>
+                                <span class="feature-tag">โบราณสถาน</span>
+                                <span class="feature-tag">ประวัติศาสตร์</span>
+                            </div>
+
+                        </div>
+                    </div>
+
+                    <!-- ชุมชนวัดเกตุ -->
+                    <div class="attraction-card" data-category="community">
+                        <div class="attraction-image">
+                            <img src="https://f.ptcdn.info/027/080/000/rr6t3x4ji442H6aDt4X3-o.jpg" alt="ชุมชนวัดเกตุ"
+                                loading="lazy">
+                            <span class="attraction-badge">ชุมชนวัฒนธรรม</span>
+                        </div>
+                        <div class="attraction-content">
+                            <div class="attraction-header">
+                                <div>
+                                    <h3>ชุมชนวัดเกตุ</h3>
+                                    <div class="attraction-distance">
+                                        <i class="fas fa-road"></i>
+                                        <span>ใจกลางเมืองเชียงใหม่</span>
+                                    </div>
+                                </div>
+                                <div style="color: gold;">
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star-half-alt"></i>
+                                </div>
+                            </div>
+                            <p>ชุมชนวัฒนธรรมล้านนาดั้งเดิมในเมืองเชียงใหม่ มีการสาธิตงานหัตถกรรมพื้นบ้าน อาหารท้องถิ่น
+                                และวิถีชีวิตชาวล้านนา</p>
+                            <div class="attraction-features">
+                                <span class="feature-tag">วิถีชีวิตชุมชน</span>
+                                <span class="feature-tag">อาหารท้องถิ่น</span>
+                                <span class="feature-tag">งานหัตถกรรม</span>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Itinerary Section -->
+            <section class="section">
+                <div class="section-header">
+                    <h2 class="section-title">ตัวอย่างโปรแกรมท่องเที่ยว</h2>
+                    <p class="section-subtitle">เดินทางตามวัฒนธรรมล้านนา 3 วัน 2 คืน</p>
+                </div>
+
+                <div class="itinerary-section">
+                    <div class="itinerary-grid">
+                        <div class="itinerary-day">
+                            <div class="day-header">
+                                <div class="day-number">1</div>
+                                <div>
+                                    <h3>วันที่หนึ่ง: สัมผัสศิลปะล้านนา</h3>
+                                    <p>ชมสถาปัตยกรรมและศิลปะล้านนาในเมือง</p>
+                                </div>
+                            </div>
+                            <ul class="day-activities">
+                                <li>เช้า: วัดพระสิงห์และวิหารลายคำ</li>
+                                <li>เที่ยง: อาหารล้านนาที่กาดหลวง</li>
+                                <li>บ่าย: พิพิธภัณฑ์สถานแห่งชาติเชียงใหม่</li>
+                                <li>เย็น: ชมย่านประตูท่าแพและวัดเจดีย์หลวง</li>
+                            </ul>
+                        </div>
+
+                        <div class="itinerary-day">
+                            <div class="day-header">
+                                <div class="day-number">2</div>
+                                <div>
+                                    <h3>วันที่สอง: เรียนรู้หัตถกรรม</h3>
+                                    <p>เยือนแหล่งหัตถกรรมพื้นบ้านรอบเมือง</p>
+                                </div>
+                            </div>
+                            <ul class="day-activities">
+                                <li>เช้า: หมู่บ้านบ่อสร้าง ร่มโบราณ</li>
+                                <li>เที่ยง: อาหารล้านนาแบบขันโตก</li>
+                                <li>บ่าย: ชุมชนเครื่องเงินวัวลาย</li>
+                                <li>เย็น: งานหัตถกรรมที่กาดหน้าอาคารสินทรัพย์</li>
+                            </ul>
+                        </div>
+
+                        <div class="itinerary-day">
+                            <div class="day-header">
+                                <div class="day-number">3</div>
+                                <div>
+                                    <h3>วันที่สาม: ไหว้พระธาตุสำคัญ</h3>
+                                    <p>เยือนสถานที่ศักดิ์สิทธิ์และธรรมชาติ</p>
+                                </div>
+                            </div>
+                            <ul class="day-activities">
+                                <li>เช้า: วัดพระธาตุดอยสุเทพ</li>
+                                <li>เที่ยง: อาหารบนดอยสุเทพ</li>
+                                <li>บ่าย: เวียงกุมกาม เมืองโบราณ</li>
+                                <li>เย็น: ซื้อของฝากและเตรียมเดินทางกลับ</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Travel Tips -->
+            <section class="section">
+                <div class="section-header">
+                    <h2 class="section-title">คำแนะนำการท่องเที่ยว</h2>
+                    <p class="section-subtitle">ข้อมูลสำคัญสำหรับนักท่องเที่ยววัฒนธรรม</p>
+                </div>
+
+                <div class="tips-section">
+                    <div class="tip-card">
+                        <div class="tip-icon">
+                            <i class="fas fa-clock"></i>
+                        </div>
+                        <h3>เวลาทำการ</h3>
+                        <p>วัดส่วนใหญ่เปิด 06:00-18:00 น. พิพิธภัณฑ์เปิด 09:00-16:00 น. (ปิดวันจันทร์-อังคาร)</p>
+                    </div>
+
+                    <div class="tip-card">
+                        <div class="tip-icon">
+                            <i class="fas fa-tshirt"></i>
+                        </div>
+                        <h3>การแต่งกาย</h3>
+                        <p>แต่งกายสุภาพเมื่อเข้าไปในวัดและสถานที่ศักดิ์สิทธิ์ ควรสวมเสื้อแขนยาวและกางเกง/กระโปรงยาว</p>
+                    </div>
+
+                    <div class="tip-card">
+                        <div class="tip-icon">
+                            <i class="fas fa-sun"></i>
+                        </div>
+                        <h3>สภาพอากาศ</h3>
+                        <p>เชียงใหม่มี 3 ฤดู: หนาว (พ.ย.-ก.พ.) ร้อน (มี.ค.-พ.ค.) ฝน (มิ.ย.-ต.ค.)
+                            เตรียมครีมกันแดดและน้ำดื่ม</p>
+                    </div>
+
+                    <div class="tip-card">
+                        <div class="tip-icon">
+                            <i class="fas fa-car"></i>
+                        </div>
+                        <h3>การเดินทาง</h3>
+                        <p>ใช้รถแดง รถสองแถว หรือแกร็บในเมืองเชียงใหม่ สำหรับนอกเมืองสามารถเช่ารถหรือใช้ทัวร์</p>
+                    </div>
+                </div>
+            </section>
+
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <!-- ใช้ footer เดียวกับหน้าแรก -->
+    </footer>
+
+    <!-- Back to Top Button -->
+    <button class="back-to-top" id="backToTop">
+        <i class="fas fa-chevron-up"></i>
+    </button>
+
+    <script src="js/main.js"></script>
+    <script src="js/lazy-load.js"></script>
+    <script>
+        // Filter Attractions
+        document.addEventListener('DOMContentLoaded', function () {
+            const filterBtns = document.querySelectorAll('.filter-btn');
+            const attractionCards = document.querySelectorAll('.attraction-card');
+
+            filterBtns.forEach(btn => {
+                btn.addEventListener('click', () => {
+                    // Update active button
+                    filterBtns.forEach(b => b.classList.remove('active'));
+                    btn.classList.add('active');
+
+                    const filter = btn.dataset.filter;
+
+                    // Filter cards
+                    attractionCards.forEach(card => {
+                        if (filter === 'all' || card.dataset.category === filter) {
+                            card.style.display = 'block';
+                            setTimeout(() => {
+                                card.style.opacity = '1';
+                                card.style.transform = 'translateY(0)';
+                            }, 10);
+                        } else {
+                            card.style.opacity = '0';
+                            card.style.transform = 'translateY(20px)';
+                            setTimeout(() => {
+                                card.style.display = 'none';
+                            }, 300);
+                        }
+                    });
+                });
+            });
+
+            // Search Form
+            const searchForm = document.querySelector('.search-box .btn-primary');
+            if (searchForm) {
+                searchForm.addEventListener('click', (e) => {
+                    e.preventDefault();
+
+                    const interest = document.getElementById('interest').value;
+                    const location = document.getElementById('location').value;
+                    const duration = document.getElementById('duration').value;
+                    const budget = document.getElementById('budget').value;
+
+                    alert(`ค้นหาแหล่งท่องเที่ยวด้วยเงื่อนไข:\n- ประเภท: ${interest}\n- พื้นที่: ${location}\n- ระยะเวลา: ${duration}\n- งบประมาณ: ${budget}\n\n(ฟังก์ชันนี้เป็นการสาธิต)`);
+                });
+            }
+
+            // Attraction Card Hover Effects
+            attractionCards.forEach(card => {
+                card.addEventListener('mouseenter', () => {
+                    card.style.zIndex = '10';
+                });
+
+                card.addEventListener('mouseleave', () => {
+                    card.style.zIndex = '';
+                });
+            });
+        });
+    </script>
+</body>
+
+</html>

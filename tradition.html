@@ -1,0 +1,656 @@
+<!DOCTYPE html>
+<html lang="th">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ประเพณีและวิถีชีวิตล้านนา | ล้านนาถิ่นไทยงาม</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Sarabun:wght@300;400;500;600;700&family=Sriracha&family=Charm:wght@400;700&family=Maitree:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/responsive.css">
+    <style>
+        /* Tradition Page Specific Styles */
+        .festival-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: var(--spacing-xl);
+            margin-top: var(--spacing-xl);
+        }
+
+        .festival-card {
+            background-color: var(--bg-card);
+            border-radius: var(--radius-lg);
+            overflow: hidden;
+            box-shadow: var(--shadow-md);
+            transition: all var(--transition-normal);
+        }
+
+        .festival-card:hover {
+            transform: translateY(-8px);
+            box-shadow: var(--shadow-xl);
+        }
+
+        .festival-header {
+            padding: var(--spacing-lg);
+            background-color: var(--primary-color);
+            color: white;
+            position: relative;
+        }
+
+        .festival-header h3 {
+            color: white;
+            margin-bottom: var(--spacing-xs);
+        }
+
+        .festival-date {
+            display: inline-block;
+            padding: var(--spacing-xs) var(--spacing-sm);
+            background-color: rgba(255, 255, 255, 0.2);
+            border-radius: var(--radius-full);
+            font-size: var(--fs-sm);
+            margin-bottom: var(--spacing-sm);
+        }
+
+        .festival-content {
+            padding: var(--spacing-lg);
+        }
+
+        .festival-features {
+            display: flex;
+            flex-wrap: wrap;
+            gap: var(--spacing-sm);
+            margin-top: var(--spacing-md);
+        }
+
+        .feature-tag {
+            padding: var(--spacing-xs) var(--spacing-sm);
+            background-color: var(--bg-light);
+            border-radius: var(--radius-full);
+            font-size: var(--fs-sm);
+            color: var(--text-medium);
+        }
+
+        .lifestyle-section {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: var(--spacing-xl);
+            margin-top: var(--spacing-xl);
+        }
+
+        .lifestyle-item {
+            text-align: center;
+            padding: var(--spacing-xl);
+            background-color: var(--bg-card);
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-md);
+            transition: all var(--transition-normal);
+        }
+
+        .lifestyle-item:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .lifestyle-icon {
+            width: 80px;
+            height: 80px;
+            margin: 0 auto var(--spacing-lg);
+            background-color: rgba(183, 28, 28, 0.1);
+            border-radius: var(--radius-full);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .lifestyle-icon i {
+            font-size: var(--fs-3xl);
+            color: var(--primary-color);
+        }
+
+        .clothing-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: var(--spacing-lg);
+            margin-top: var(--spacing-xl);
+        }
+
+        .clothing-item {
+            text-align: center;
+            padding: var(--spacing-lg);
+            background-color: var(--bg-card);
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-md);
+        }
+
+        .clothing-image {
+            width: 150px;
+            height: 150px;
+            margin: 0 auto var(--spacing-md);
+            border-radius: var(--radius-full);
+            overflow: hidden;
+            border: 4px solid var(--primary-light);
+        }
+
+        .clothing-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .calendar-section {
+            background-color: var(--bg-card);
+            border-radius: var(--radius-lg);
+            padding: var(--spacing-xl);
+            margin-top: var(--spacing-xl);
+            box-shadow: var(--shadow-md);
+        }
+
+        .calendar-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: var(--spacing-lg);
+            margin-top: var(--spacing-lg);
+        }
+
+        .calendar-month {
+            text-align: center;
+            padding: var(--spacing-md);
+            background-color: var(--bg-light);
+            border-radius: var(--radius-md);
+            border-left: 4px solid var(--accent-color);
+        }
+
+        .calendar-month h4 {
+            color: var(--primary-color);
+            margin-bottom: var(--spacing-sm);
+        }
+
+        .slideshow-container {
+            position: relative;
+            height: 400px;
+            border-radius: var(--radius-lg);
+            overflow: hidden;
+            margin-top: var(--spacing-xl);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .slideshow-slide {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            opacity: 0;
+            transition: opacity 1s ease;
+            background-size: cover;
+            background-position: center;
+        }
+
+        .slideshow-slide.active {
+            opacity: 1;
+        }
+
+        .slideshow-controls {
+            position: absolute;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 10px;
+            z-index: 10;
+        }
+
+        .slideshow-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background-color: rgba(255, 255, 255, 0.5);
+            cursor: pointer;
+            transition: all var(--transition-fast);
+        }
+
+        .slideshow-dot.active {
+            background-color: white;
+            transform: scale(1.2);
+        }
+
+        .wisdom-section {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: var(--spacing-lg);
+            margin-top: var(--spacing-xl);
+        }
+
+        .wisdom-card {
+            background-color: var(--bg-card);
+            padding: var(--spacing-lg);
+            border-radius: var(--radius-lg);
+            border-top: 4px solid var(--accent-color);
+            box-shadow: var(--shadow-md);
+        }
+
+        .wisdom-icon {
+            font-size: var(--fs-2xl);
+            color: var(--accent-color);
+            margin-bottom: var(--spacing-md);
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Header -->
+    <header>
+        <div class="nav-container container">
+
+            <nav>
+                <ul class="nav-links" id="navLinks">
+                    <li><a href="index.html"><i class="fas fa-home"></i> หน้าแรก</a></li>
+                    <li><a href="history.html"><i class="fas fa-landmark"></i> ประวัติและอารยธรรม</a></li>
+                    <li><a href="art.html"><i class="fas fa-palette"></i> ศิลปะและสถาปัตยกรรม</a></li>
+                    <li><a href="tradition.html" class="active"><i class="fas fa-hands-praying"></i>
+                            ประเพณีและวิถีชีวิต</a></li>
+                    <li><a href="culture.html"><i class="fas fa-music"></i> อาหาร ดนตรี และหัตถกรรม</a></li>
+                    <li><a href="tourism.html"><i class="fas fa-map-marked-alt"></i> แหล่งท่องเที่ยว</a></li>
+                </ul>
+            </nav>
+
+        </div>
+    </header>
+
+    <!-- Search Bar -->
+    <div class="search-bar" id="searchBar">
+        <div class="container">
+            <form class="search-form">
+                <input type="text" placeholder="ค้นหาประเพณีล้านนา..." class="search-input">
+                <button type="submit" class="search-btn">
+                    <i class="fas fa-search"></i>
+                </button>
+                <button type="button" class="search-close" id="searchClose">
+                    <i class="fas fa-times"></i>
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Page Hero -->
+    <section class="page-hero">
+        <div class="page-hero-bg"
+            style="background-image: url('https://images.unsplash.com/photo-1598894597311-b3b34d5f5c23?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80');">
+        </div>
+        <div class="page-hero-overlay"></div>
+        <div class="container">
+            <div class="page-hero-content">
+                <nav class="breadcrumb">
+                    <a href="index.html">หน้าแรก</a>
+                    <i class="fas fa-chevron-right"></i>
+                    <span>ประเพณีและวิถีชีวิต</span>
+                </nav>
+                <h1 class="page-hero-title">ประเพณีและวิถีชีวิตล้านนา</h1>
+                <p class="page-hero-subtitle">วัฒนธรรมที่มีชีวิต วิถีชีวิตเรียบง่าย ประเพณีงดงาม</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Main Content -->
+    <main class="page-content">
+        <div class="container">
+            <!-- Major Festivals -->
+            <section class="section">
+                <div class="section-header">
+                    <h2 class="section-title">ประเพณีสำคัญล้านนา</h2>
+                    <p class="section-subtitle">เทศกาลและพิธีกรรมสำคัญตามปฏิทินล้านนา</p>
+                </div>
+
+                <div class="festival-grid">
+                    <!-- ยี่เป็ง -->
+                    <div class="festival-card">
+                        <div class="festival-header">
+                            <span class="festival-date">พฤศจิกายน</span>
+                            <h3>ประเพณียี่เป็ง</h3>
+                            <p>ลอยกระทงล้านนา ประเพณีสำคัญที่สุดของล้านนา</p>
+                        </div>
+                        <div class="festival-content">
+                            <p>เทศกาลลอยกระทงล้านนา จัดขึ้นในวันเพ็ญเดือนยี่ (พฤศจิกายน)
+                                มีการปล่อยโคมลอยขึ้นฟ้าเพื่อบูชาพระธาตุจุฬามณีบนสวรรค์</p>
+                            <div class="festival-features">
+                                <span class="feature-tag">โคมลอย</span>
+                                <span class="feature-tag">กระทงดอกบัว</span>
+                                <span class="feature-tag">ขบวนแห่</span>
+                                <span class="feature-tag">จุดประทีป</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- สงกรานต์ล้านนา -->
+                    <div class="festival-card">
+                        <div class="festival-header" style="background-color: #4a148c;">
+                            <span class="festival-date">เมษายน</span>
+                            <h3>สงกรานต์ล้านนา (ปี๋ใหม่เมือง)</h3>
+                            <p>วันปีใหม่ล้านนา 15 วันแห่งการทำบุญ</p>
+                        </div>
+                        <div class="festival-content">
+                            <p>วันขึ้นปีใหม่ล้านนาซึ่งยึดตามประเพณีดั้งเดิม ประกอบด้วยพิธีกรรมหลายอย่าง เช่น สรงน้ำพระ
+                                รดน้ำดำหัวผู้ใหญ่ การทำบุญตักบาตร และเล่นสาดน้ำ</p>
+                            <div class="festival-features">
+                                <span class="feature-tag">รดน้ำดำหัว</span>
+                                <span class="feature-tag">ก่อเจดีย์ทราย</span>
+                                <span class="feature-tag">ปล่อยนกปล่อยปลา</span>
+                                <span class="feature-tag">แห่ครัวทาน</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- เข้าพรรษา -->
+                    <div class="festival-card">
+                        <div class="festival-header" style="background-color: #2e7d32;">
+                            <span class="festival-date">กรกฎาคม</span>
+                            <h3>พิธีเข้าพรรษา</h3>
+                            <p>ตักบาตรดอกไม้และถวายเทียนพรรษา</p>
+                        </div>
+                        <div class="festival-content">
+                            <p>พิธีกรรมสำคัญทางพุทธศาสนาของล้านนา มีการทำบุญตักบาตรดอกไม้ (ดอกคำฝอย)
+                                และถวายเทียนพรรษาที่ตกแต่งอย่างสวยงาม</p>
+                            <div class="festival-features">
+                                <span class="feature-tag">ตักบาตรดอกไม้</span>
+                                <span class="feature-tag">ถวายเทียนพรรษา</span>
+                                <span class="feature-tag">เวียนเทียน</span>
+                                <span class="feature-tag">ฟังธรรม</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- ออกพรรษา -->
+                    <div class="festival-card">
+                        <div class="festival-header" style="background-color: #ff8f00;">
+                            <span class="festival-date">ตุลาคม</span>
+                            <h3>พิธีออกพรรษา (ตักบาตรเทโว)</h3>
+                            <p>การตักบาตรเทโวโรหณะ และแข่งเรือ</p>
+                        </div>
+                        <div class="festival-content">
+                            <p>พิธีตักบาตรเทโวโรหณะ รำลึกถึงวันที่พระพุทธเจ้าเสด็จลงจากสวรรค์ชั้นดาวดึงส์
+                                มีการทำบุญและจัดแข่งเรือในแม่น้ำปิง</p>
+                            <div class="festival-features">
+                                <span class="feature-tag">ตักบาตรเทโว</span>
+                                <span class="feature-tag">แข่งเรือ</span>
+                                <span class="feature-tag">ลอยโคม</span>
+                                <span class="feature-tag">ถวายผ้าจำนำพรรษา</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Lifestyle -->
+            <section class="section">
+                <div class="section-header">
+                    <h2 class="section-title">วิถีชีวิตชาวล้านนา</h2>
+                    <p class="section-subtitle">ความเป็นอยู่และขนบธรรมเนียมในชีวิตประจำวัน</p>
+                </div>
+
+                <div class="lifestyle-section">
+                    <div class="lifestyle-item">
+                        <div class="lifestyle-icon">
+                            <i class="fas fa-home"></i>
+                        </div>
+                        <h3>ที่อยู่อาศัย</h3>
+                        <p>เรือนไทยล้านนา (เฮือนไทย) สร้างด้วยไม้สักยกพื้นสูง หลังคาทรงจั่ว มีชานบ้านและใต้ถุนโล่ง</p>
+                    </div>
+
+                    <div class="lifestyle-item">
+                        <div class="lifestyle-icon">
+                            <i class="fas fa-users"></i>
+                        </div>
+                        <h3>ครอบครัวและชุมชน</h3>
+                        <p>ระบบเครือญาติแน่นแฟ้น ชุมชนช่วยเหลือกัน มีผู้นำทางจิตวิญญาณ (หมอเมือง) และผู้อาวุโส</p>
+                    </div>
+
+                    <div class="lifestyle-item">
+                        <div class="lifestyle-icon">
+                            <i class="fas fa-hand-holding-heart"></i>
+                        </div>
+                        <h3>ความเชื่อและศาสนา</h3>
+                        <p>ผสมผสานระหว่างพุทธศาสนาและความเชื่อดั้งเดิม (ผี) เคารพบูชาเจ้าที่เจ้าทางและสิ่งศักดิ์สิทธิ์
+                        </p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Traditional Clothing -->
+            <section class="section">
+                <div class="section-header">
+                    <h2 class="section-title">การแต่งกายพื้นเมืองล้านนา</h2>
+                    <p class="section-subtitle">เสื้อผ้าและเครื่องประดับล้านนาดั้งเดิม</p>
+                </div>
+
+                <div class="clothing-grid">
+                    <div class="clothing-item">
+                        <div class="clothing-image">
+                            <img src="https://us-fbcloud.net/picpost/data/393/393689-65b1e4ec2ebd1.n.op.webp"
+                                alt="ชุดผู้หญิงล้านนา" loading="lazy">
+                        </div>
+                        <h3>ชุดผู้หญิง (สตรี)</h3>
+                        <p>นุ่งซิ่นตีนจกหรือซิ่นลายน้ำไหล เสื้อแขนกระบอกสีพื้น คาดผ้าสะดอหรือผ้าปูม
+                            เกล้าผมมวยและประดับดอกไม้</p>
+                    </div>
+
+                    <div class="clothing-item">
+                        <div class="clothing-image">
+                            <img src="https://i.pinimg.com/736x/b9/ac/16/b9ac16f67d9f60ef9e83d2694322cccc.jpg"
+                                alt="ชุดผู้ชายล้านนา" loading="lazy">
+                        </div>
+                        <h3>ชุดผู้ชาย (บุรุษ)</h3>
+                        <p>นุ่งกางเกงขาก๊วยหรือโจงกระเบน เสื้อม่อฮ่อมหรือเสื้อคอกลมสีพื้น คาดผ้าเบี่ยงหรือผ้าสะดอ</p>
+                    </div>
+
+                    <div class="clothing-item">
+                        <div class="clothing-image">
+                            <img src="https://i.etsystatic.com/7075869/r/il/719145/6741866684/il_1080xN.6741866684_ivm3.jpg"
+                                alt="เครื่องประดับเงิน" loading="lazy">
+                        </div>
+                        <h3>เครื่องประดับเงิน</h3>
+                        <p>เครื่องประดับเงินแบบล้านนา เช่น สร้อยคอ กำไล แหวน เข็มขัด ต่างหู ทำโดยช่างเงินชาวล้านนา
+                            (ชาวเมี่ยน)</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Traditional Calendar -->
+            <section class="section">
+                <div class="section-header">
+                    <h2 class="section-title">ปฏิทินประเพณีล้านนา</h2>
+                    <p class="section-subtitle">เดือนและพิธีกรรมสำคัญตามปีปฏิทินล้านนา</p>
+                </div>
+
+                <div class="calendar-section">
+                    <div class="calendar-grid">
+                        <div class="calendar-month">
+                            <h4>เดือนยี่ (พฤศจิกายน)</h4>
+                            <p>ประเพณียี่เป็ง ลอยกระทง</p>
+                        </div>
+
+                        <div class="calendar-month">
+                            <h4>เดือนสาม (มกราคม)</h4>
+                            <p>งานบุญพระเวสสันดรชาดก</p>
+                        </div>
+
+                        <div class="calendar-month">
+                            <h4>เดือนหก (เมษายน)</h4>
+                            <p>สงกรานต์ล้านนา (ปี๋ใหม่เมือง)</p>
+                        </div>
+
+                        <div class="calendar-month">
+                            <h4>เดือนแปด (มิถุนายน)</h4>
+                            <p>งานบุญสรงน้ำพระธาตุ</p>
+                        </div>
+
+                        <div class="calendar-month">
+                            <h4>เดือนเก้า (กรกฎาคม)</h4>
+                            <p>พิธีเข้าพรรษา ตักบาตรดอกไม้</p>
+                        </div>
+
+                        <div class="calendar-month">
+                            <h4>เดือนสิบสอง (ตุลาคม)</h4>
+                            <p>พิธีออกพรรษา ตักบาตรเทโว</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Slideshow -->
+            <section class="section">
+                <div class="section-header">
+                    <h2 class="section-title">ภาพประเพณีล้านนา</h2>
+                    <p class="section-subtitle">ชมภาพประเพณีและวิถีชีวิตชาวล้านนา</p>
+                </div>
+
+                <div class="slideshow-container" id="traditionSlideshow">
+                    <!-- Slides will be added by JavaScript -->
+                </div>
+            </section>
+
+            <!-- Wisdom Section -->
+            <section class="section">
+                <div class="section-header">
+                    <h2 class="section-title">ภูมิปัญญาและความเชื่อ</h2>
+                    <p class="section-subtitle">ความรู้ดั้งเดิมที่สั่งสมมาหลายชั่วอายุคน</p>
+                </div>
+
+                <div class="wisdom-section">
+                    <div class="wisdom-card">
+                        <div class="wisdom-icon">
+                            <i class="fas fa-leaf"></i>
+                        </div>
+                        <h3>ความรู้เรื่องสมุนไพร</h3>
+                        <p>การใช้สมุนไพรล้านนารักษาโรค เช่น ยาหม่องน้ำมันล้านนา ยาต้มสมุนไพร ยาประคบ</p>
+                    </div>
+
+                    <div class="wisdom-card">
+                        <div class="wisdom-icon">
+                            <i class="fas fa-moon"></i>
+                        </div>
+                        <h3>โหราศาสตร์ล้านนา</h3>
+                        <p>การดูฤกษ์ยาม ทำนายทายทัก ตามปฏิทินจันทรคติล้านนา และความเชื่อเรื่องวันดีวันเสีย</p>
+                    </div>
+
+                    <div class="wisdom-card">
+                        <div class="wisdom-icon">
+                            <i class="fas fa-book"></i>
+                        </div>
+                        <h3>ตำราใบลาน</h3>
+                        <p>บันทึกความรู้ล้านนาลงบนใบลาน เรื่องราวทางพุทธศาสนา ตำรายา และวรรณกรรมท้องถิ่น</p>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <!-- ใช้ footer เดียวกับหน้าแรก -->
+    </footer>
+
+    <!-- Back to Top Button -->
+    <button class="back-to-top" id="backToTop">
+        <i class="fas fa-chevron-up"></i>
+    </button>
+
+    <script src="js/main.js"></script>
+    <script src="js/lazy-load.js"></script>
+    <script>
+        // Slideshow for Tradition Page
+        document.addEventListener('DOMContentLoaded', function () {
+            const slideshowContainer = document.getElementById('traditionSlideshow');
+
+            if (slideshowContainer) {
+                const images = [
+                    'https://static.thairath.co.th/media/dFQROr7oWzulq5Fa6rHGey94eNQ28OiHALfbBYqKmveq24biNNTNJFWO0fRp0W940Pp.webp',
+                    'https://dg.lnwfile.com/_/dg/_raw/2j/zk/dp.jpg',
+                    'https://suzasunarat.wordpress.com/wp-content/uploads/2012/01/5.jpg',
+                    'https://www.ichiangmaipr.com/wp-content/uploads/2018/11/3.jpg'
+                ];
+
+                const captions = [
+                    'ประเพณียี่เป็ง - โคมลอยล้านนา',
+                    'สงกรานต์ล้านนา - การรดน้ำดำหัว',
+                    'การแต่งกายพื้นเมืองล้านนา',
+                    'วิถีชีวิตชุมชนล้านนา'
+                ];
+
+                // Create slides
+                images.forEach((img, index) => {
+                    const slide = document.createElement('div');
+                    slide.className = 'slideshow-slide';
+                    slide.style.backgroundImage = `url('${img}')`;
+
+                    const overlay = document.createElement('div');
+                    overlay.style.position = 'absolute';
+                    overlay.style.bottom = '0';
+                    overlay.style.left = '0';
+                    overlay.style.right = '0';
+                    overlay.style.background = 'linear-gradient(to top, rgba(0,0,0,0.7), transparent)';
+                    overlay.style.color = 'white';
+                    overlay.style.padding = 'var(--spacing-xl)';
+
+                    const caption = document.createElement('h3');
+                    caption.textContent = captions[index];
+                    caption.style.color = 'white';
+                    caption.style.fontSize = 'var(--fs-2xl)';
+                    caption.style.marginBottom = 'var(--spacing-sm)';
+
+                    overlay.appendChild(caption);
+                    slide.appendChild(overlay);
+                    slideshowContainer.appendChild(slide);
+                });
+
+                // Create controls
+                const controls = document.createElement('div');
+                controls.className = 'slideshow-controls';
+
+                images.forEach((_, index) => {
+                    const dot = document.createElement('div');
+                    dot.className = 'slideshow-dot';
+                    if (index === 0) dot.classList.add('active');
+                    dot.addEventListener('click', () => goToSlide(index));
+                    controls.appendChild(dot);
+                });
+
+                slideshowContainer.appendChild(controls);
+
+                let currentSlide = 0;
+                const slides = document.querySelectorAll('.slideshow-slide');
+                const dots = document.querySelectorAll('.slideshow-dot');
+
+                function showSlide(index) {
+                    slides.forEach(slide => slide.classList.remove('active'));
+                    dots.forEach(dot => dot.classList.remove('active'));
+
+                    slides[index].classList.add('active');
+                    dots[index].classList.add('active');
+                    currentSlide = index;
+                }
+
+                function goToSlide(index) {
+                    showSlide(index);
+                }
+
+                function nextSlide() {
+                    currentSlide = (currentSlide + 1) % slides.length;
+                    showSlide(currentSlide);
+                }
+
+                // Auto slide
+                setInterval(nextSlide, 5000);
+
+                // Show first slide
+                showSlide(0);
+            }
+        });
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,674 @@
+<!DOCTYPE html>
+<html lang="th">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>อาหาร ดนตรี และหัตถกรรมล้านนา | ล้านนาถิ่นไทยงาม</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Sarabun:wght@300;400;500;600;700&family=Sriracha&family=Charm:wght@400;700&family=Maitree:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/responsive.css">
+    <style>
+        /* Culture Page Specific Styles */
+        .category-tabs {
+            display: flex;
+            justify-content: center;
+            gap: var(--spacing-sm);
+            margin-bottom: var(--spacing-xl);
+            flex-wrap: wrap;
+        }
+
+        .category-tab {
+            padding: var(--spacing-md) var(--spacing-xl);
+            background-color: var(--bg-light);
+            border: none;
+            border-radius: var(--radius-full);
+            font-family: var(--font-body);
+            font-size: var(--fs-base);
+            font-weight: 600;
+            color: var(--text-medium);
+            cursor: pointer;
+            transition: all var(--transition-normal);
+        }
+
+        .category-tab:hover {
+            background-color: var(--primary-light);
+            color: white;
+        }
+
+        .category-tab.active {
+            background-color: var(--primary-color);
+            color: white;
+        }
+
+        .category-content {
+            display: none;
+        }
+
+        .category-content.active {
+            display: block;
+            animation: fadeIn 0.5s ease;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .food-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: var(--spacing-xl);
+        }
+
+        .food-card {
+            background-color: var(--bg-card);
+            border-radius: var(--radius-lg);
+            overflow: hidden;
+            box-shadow: var(--shadow-md);
+            transition: all var(--transition-normal);
+        }
+
+        .food-card:hover {
+            transform: translateY(-8px);
+            box-shadow: var(--shadow-xl);
+        }
+
+        .food-image {
+            height: 200px;
+            overflow: hidden;
+        }
+
+        .food-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform var(--transition-slow);
+        }
+
+        .food-card:hover .food-image img {
+            transform: scale(1.1);
+        }
+
+        .food-content {
+            padding: var(--spacing-lg);
+        }
+
+        .food-name {
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-sm);
+            margin-bottom: var(--spacing-sm);
+        }
+
+        .food-name h3 {
+            margin: 0;
+            color: var(--text-dark);
+        }
+
+        .food-icon {
+            color: var(--primary-color);
+            font-size: var(--fs-lg);
+        }
+
+        .food-ingredients {
+            color: var(--text-light);
+            font-size: var(--fs-sm);
+            margin-bottom: var(--spacing-md);
+        }
+
+        .music-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: var(--spacing-lg);
+        }
+
+        .music-card {
+            text-align: center;
+            padding: var(--spacing-xl);
+            background-color: var(--bg-card);
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-md);
+            transition: all var(--transition-normal);
+        }
+
+        .music-card:hover {
+            transform: translateY(-5px) scale(1.02);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .music-icon {
+            width: 100px;
+            height: 100px;
+            margin: 0 auto var(--spacing-lg);
+            background-color: rgba(183, 28, 28, 0.1);
+            border-radius: var(--radius-full);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .music-icon i {
+            font-size: var(--fs-3xl);
+            color: var(--primary-color);
+        }
+
+        .craft-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: var(--spacing-xl);
+        }
+
+        .craft-card {
+            background-color: var(--bg-card);
+            border-radius: var(--radius-lg);
+            overflow: hidden;
+            box-shadow: var(--shadow-md);
+            transition: all var(--transition-normal);
+        }
+
+        .craft-card:hover {
+            transform: translateY(-8px);
+            box-shadow: var(--shadow-xl);
+        }
+
+        .craft-image {
+            height: 250px;
+            overflow: hidden;
+        }
+
+        .craft-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform var(--transition-slow);
+        }
+
+        .craft-card:hover .craft-image img {
+            transform: scale(1.1);
+        }
+
+        .craft-content {
+            padding: var(--spacing-lg);
+        }
+
+        .craft-location {
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-xs);
+            color: var(--text-light);
+            font-size: var(--fs-sm);
+            margin-top: var(--spacing-md);
+        }
+
+        .craft-location i {
+            color: var(--primary-color);
+        }
+
+        .audio-player {
+            background-color: var(--bg-light);
+            border-radius: var(--radius-lg);
+            padding: var(--spacing-lg);
+            margin-top: var(--spacing-lg);
+        }
+
+        .audio-controls {
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-md);
+            margin-top: var(--spacing-md);
+        }
+
+        .audio-btn {
+            width: 50px;
+            height: 50px;
+            border-radius: var(--radius-full);
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            font-size: var(--fs-lg);
+            cursor: pointer;
+            transition: all var(--transition-normal);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .audio-btn:hover {
+            background-color: var(--primary-dark);
+            transform: scale(1.1);
+        }
+
+        .audio-progress {
+            flex-grow: 1;
+            height: 6px;
+            background-color: var(--border-color);
+            border-radius: var(--radius-full);
+            overflow: hidden;
+            cursor: pointer;
+        }
+
+        .audio-progress-bar {
+            height: 100%;
+            background-color: var(--primary-color);
+            width: 0%;
+            transition: width 0.1s;
+        }
+
+        .audio-time {
+            font-size: var(--fs-sm);
+            color: var(--text-light);
+            min-width: 100px;
+            text-align: center;
+        }
+
+        .recipe-section {
+            background-color: var(--bg-card);
+            border-radius: var(--radius-lg);
+            padding: var(--spacing-xl);
+            margin-top: var(--spacing-xl);
+            box-shadow: var(--shadow-md);
+        }
+
+        .recipe-steps {
+            margin-top: var(--spacing-lg);
+        }
+
+        .recipe-step {
+            display: flex;
+            gap: var(--spacing-lg);
+            margin-bottom: var(--spacing-lg);
+            align-items: flex-start;
+        }
+
+        .step-number {
+            width: 40px;
+            height: 40px;
+            background-color: var(--primary-color);
+            color: white;
+            border-radius: var(--radius-full);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            flex-shrink: 0;
+        }
+
+        .craft-process {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: var(--spacing-lg);
+            margin-top: var(--spacing-xl);
+        }
+
+        .process-step {
+            text-align: center;
+            padding: var(--spacing-lg);
+            background-color: var(--bg-light);
+            border-radius: var(--radius-lg);
+        }
+
+        .process-step h4 {
+            color: var(--primary-color);
+            margin-bottom: var(--spacing-sm);
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Header -->
+    <header>
+        <div class="nav-container container">
+            <nav>
+                <ul class="nav-links" id="navLinks">
+                    <li><a href="index.html"><i class="fas fa-home"></i> หน้าแรก</a></li>
+                    <li><a href="history.html"><i class="fas fa-landmark"></i> ประวัติและอารยธรรม</a></li>
+                    <li><a href="art.html"><i class="fas fa-palette"></i> ศิลปะและสถาปัตยกรรม</a></li>
+                    <li><a href="tradition.html"><i class="fas fa-hands-praying"></i> ประเพณีและวิถีชีวิต</a></li>
+                    <li><a href="culture.html" class="active"><i class="fas fa-music"></i> อาหาร ดนตรี และหัตถกรรม</a>
+                    </li>
+                    <li><a href="tourism.html"><i class="fas fa-map-marked-alt"></i> แหล่งท่องเที่ยว</a></li>
+                </ul>
+            </nav>
+
+        </div>
+    </header>
+
+    <!-- Search Bar -->
+    <div class="search-bar" id="searchBar">
+        <div class="container">
+            <form class="search-form">
+                <input type="text" placeholder="ค้นหาวัฒนธรรมล้านนา..." class="search-input">
+                <button type="submit" class="search-btn">
+                    <i class="fas fa-search"></i>
+                </button>
+                <button type="button" class="search-close" id="searchClose">
+                    <i class="fas fa-times"></i>
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Page Hero -->
+    <section class="page-hero">
+        <div class="page-hero-bg"
+            style="background-image: url('https://images.unsplash.com/photo-1587734195503-904137cec4a6?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80');">
+        </div>
+        <div class="page-hero-overlay"></div>
+        <div class="container">
+            <div class="page-hero-content">
+                <nav class="breadcrumb">
+                    <a href="index.html">หน้าแรก</a>
+                    <i class="fas fa-chevron-right"></i>
+                    <span>อาหาร ดนตรี และหัตถกรรม</span>
+                </nav>
+                <h1 class="page-hero-title">อาหาร ดนตรี และหัตถกรรมล้านนา</h1>
+                <p class="page-hero-subtitle">รสชาติแห่งล้านนา เสียงดนตรีพื้นบ้าน งานฝีมืออันเลื่องชื่อ</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Main Content -->
+    <main class="page-content">
+        <div class="container">
+            <!-- Category Tabs -->
+            <div class="category-tabs">
+                <button class="category-tab active" data-category="food">อาหารล้านนา</button>
+                <button class="category-tab" data-category="music">ดนตรีล้านนา</button>
+                <button class="category-tab" data-category="crafts">หัตถกรรมล้านนา</button>
+            </div>
+
+            <!-- Food Category -->
+            <div class="category-content active" id="foodContent">
+                <section class="section">
+                    <div class="section-header">
+                        <h2 class="section-title">อาหารล้านนา</h2>
+                        <p class="section-subtitle">รสชาติอันเป็นเอกลักษณ์จากพืชพรรณและสมุนไพรท้องถิ่น</p>
+                    </div>
+
+                    <div class="food-grid">
+                        <!-- ข้าวซอย -->
+                        <div class="food-card">
+                            <div class="food-image">
+                                <img src="https://aroifin.com/wp-content/uploads/2025/04/cover-khao-soi.webp"
+                                    alt="ข้าวซอย" loading="lazy">
+                            </div>
+                            <div class="food-content">
+                                <div class="food-name">
+                                    <i class="fas fa-utensils food-icon"></i>
+                                    <h3>ข้าวซอย</h3>
+                                </div>
+                                <p class="food-ingredients">เส้นก๋วยเตี๋ยวหมี่เหลือง แกงกะทิเครื่องเทศ
+                                    เนื้อไก่หรือเนื้อวัว หอมเจียว พริกป่น</p>
+                                <p>อาหารขึ้นชื่อของเชียงใหม่ ได้รับอิทธิพลจากอาหารจีนยูนนาน
+                                    รับประทานพร้อมผักกาดดองและมะนาว</p>
+                            </div>
+                        </div>
+
+                        <!-- น้ำพริกหนุ่ม -->
+                        <div class="food-card">
+                            <div class="food-image">
+                                <img src="https://img.wongnai.com/p/1920x0/2017/09/19/d6492d8313714df0b1f6257a3f74e931.jpg"
+                                    alt="น้ำพริกหนุ่ม" loading="lazy">
+                            </div>
+                            <div class="food-content">
+                                <div class="food-name">
+                                    <i class="fas fa-pepper-hot food-icon"></i>
+                                    <h3>น้ำพริกหนุ่ม</h3>
+                                </div>
+                                <p class="food-ingredients">พริกหนุ่มย่าง กระเทียมย่าง หอมแดงย่าง มะเขือเทศย่าง</p>
+                                <p>น้ำพริกพื้นบ้านล้านนา มีรสเผ็ดนำกลิ่นหอมของผักย่าง รับประทานกับผักสดและแคบหมู</p>
+                            </div>
+                        </div>
+
+                        <!-- แกงฮังเล -->
+                        <div class="food-card">
+                            <div class="food-image">
+                                <img src="https://www.maggi.co.th/sites/default/files/styles/home_stage_1500_700/public/srh_recipes/f5e64978ccae3930497325e17603ecc4.png?h=750f4574&itok=NwlKEHPP"
+                                    alt="แกงฮังเล" loading="lazy">
+                            </div>
+                            <div class="food-content">
+                                <div class="food-name">
+                                    <i class="fas fa-drumstick-bite food-icon"></i>
+                                    <h3>แกงฮังเล</h3>
+                                </div>
+                                <p class="food-ingredients">เนื้อหมูสามชั้น ลูกผักชี ยี่หร่า กระวาน โป๊ยกั้ก หมากพ่น
+                                    ใบชะพลู</p>
+                                <p>แกงแบบพม่าที่ได้รับความนิยมในล้านนา มีรสหวาน เค็ม เปรี้ยว รับประทานกับข้าวสวย</p>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </div>
+
+            <!-- Music Category -->
+            <div class="category-content" id="musicContent">
+                <section class="section">
+                    <div class="section-header">
+                        <h2 class="section-title">ดนตรีล้านนา</h2>
+                        <p class="section-subtitle">เสียงดนตรีพื้นบ้าน สื่อสารวัฒนธรรมผ่านบทเพลง</p>
+                    </div>
+
+                    <div class="music-grid">
+                        <!-- ซอ -->
+                        <div class="music-card">
+                            <div class="music-icon">
+                                <i class="fas fa-guitar"></i>
+                            </div>
+                            <h3>ซอ</h3>
+                            <p>เครื่องดนตรีประเภทดีด คล้ายกีตาร์แต่มี 3 สาย ใช้บรรเลงเพลงซอ (การขับร้อง) และเพลงพื้นบ้าน
+                            </p>
+                        </div>
+
+                        <!-- สะล้อ -->
+                        <div class="music-card">
+                            <div class="music-icon">
+                                <i class="fas fa-music"></i>
+                            </div>
+                            <h3>สะล้อ</h3>
+                            <p>เครื่องดนตรีประเภทสี คล้ายไวโอลินแต่มี 3 สาย สร้างจากไม้ท่อนเดียว เจาะรูลึก</p>
+                        </div>
+
+                        <!-- ปี่ -->
+                        <div class="music-card">
+                            <div class="music-icon">
+                                <i class="fas fa-music"></i>
+                            </div>
+                            <h3>ปี่</h3>
+                            <p>เครื่องเป่าลมไม้ มีลิ้นแคน เป็นเครื่องดนตรีสำคัญในวงดนตรีพื้นเมืองล้านนา</p>
+                        </div>
+
+                        <!-- กลอง -->
+                        <div class="music-card">
+                            <div class="music-icon">
+                                <i class="fas fa-drum"></i>
+                            </div>
+                            <h3>กลองปู่จา</h3>
+                            <p>กลองสองหน้า ใช้ตีประกอบจังหวะในวงดนตรีพื้นเมือง และใช้ในพิธีกรรมต่าง ๆ</p>
+                        </div>
+                    </div>
+
+                </section>
+            </div>
+
+            <!-- Crafts Category -->
+            <div class="category-content" id="craftsContent">
+                <section class="section">
+                    <div class="section-header">
+                        <h2 class="section-title">หัตถกรรมล้านนา</h2>
+                        <p class="section-subtitle">งานฝีมือพื้นบ้านที่สืบทอดกันมาหลายชั่วอายุคน</p>
+                    </div>
+
+                    <div class="craft-grid">
+                        <!-- ผ้าทอ -->
+                        <div class="craft-card">
+                            <div class="craft-image">
+                                <img src="https://gd.lnwfile.com/_/gd/_raw/vn/fp/03.jpg" alt="ผ้าทอล้านนา"
+                                    loading="lazy">
+                            </div>
+                            <div class="craft-content">
+                                <h3>ผ้าทอล้านนา</h3>
+                                <p>ผ้าทอพื้นเมืองลายดั้งเดิม เช่น ลายน้ำไหล ลายขอคำเมือง ลายนกยูง
+                                    ใช้เทคนิคการทอยกดอกและจก</p>
+                                <div class="craft-location">
+                                    <i class="fas fa-map-marker-alt"></i>
+                                    <span>ผ้าทอเมืองลอง (แพร่), ผ้าทอดอกคำ (เชียงราย)</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- ร่มบ่อสร้าง -->
+                        <div class="craft-card">
+                            <div class="craft-image">
+                                <img src="https://image.makewebcdn.com/makeweb/m_1920x0/W7lTZBRXV/van1/Profile_picture_TRSDRI01.jpg?v=202405291424"
+                                    alt="ร่มบ่อสร้าง" loading="lazy">
+                            </div>
+                            <div class="craft-content">
+                                <h3>ร่มบ่อสร้าง</h3>
+                                <p>ร่มกระดาษสาทาสีสันสดใส ด้วยลวดลายดอกไม้และสัตว์ประจำถิ่น ทำจากกระดาษสาและไม้ไผ่</p>
+                                <div class="craft-location">
+                                    <i class="fas fa-map-marker-alt"></i>
+                                    <span>หมู่บ้านบ่อสร้าง อ.สันกำแพง จ.เชียงใหม่</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- เครื่องเงิน -->
+                        <div class="craft-card">
+                            <div class="craft-image">
+                                <div class="craft-image">
+                                    <img src="https://www.matichon.co.th/weekly/wp-content/uploads/2021/09/cover-%E0%B8%A5%E0%B9%89%E0%B8%B2%E0%B8%99%E0%B8%99%E0%B8%B2-2145.jpg"
+                                        alt="เครื่องเงินล้านนา" loading="lazy">
+                                </div>
+                            </div>
+                            <div class="craft-content">
+                                <h3>เครื่องเงินล้านนา</h3>
+                                <p>เครื่องประดับเงินลายดั้งเดิม เช่น สร้อยคอ กำไล แหวน เข็มขัด
+                                    ทำโดยช่างเงินชาวเมี่ยนและชาวล้านนา</p>
+                                <div class="craft-location">
+                                    <i class="fas fa-map-marker-alt"></i>
+                                    <span>ตลาดวัวลาย, หมู่บ้านช่างเงิน จ.เชียงใหม่</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <!-- ใช้ footer เดียวกับหน้าแรก -->
+    </footer>
+
+    <!-- Back to Top Button -->
+    <button class="back-to-top" id="backToTop">
+        <i class="fas fa-chevron-up"></i>
+    </button>
+
+    <script src="js/main.js"></script>
+    <script src="js/lazy-load.js"></script>
+    <script>
+        // Category Tabs
+        document.addEventListener('DOMContentLoaded', function () {
+            const tabs = document.querySelectorAll('.category-tab');
+            const contents = document.querySelectorAll('.category-content');
+
+            tabs.forEach(tab => {
+                tab.addEventListener('click', () => {
+                    const category = tab.dataset.category;
+
+                    // Update active tab
+                    tabs.forEach(t => t.classList.remove('active'));
+                    tab.classList.add('active');
+
+                    // Show corresponding content
+                    contents.forEach(content => {
+                        content.classList.remove('active');
+                        if (content.id === `${category}Content`) {
+                            content.classList.add('active');
+                        }
+                    });
+                });
+            });
+
+            // Audio Player
+            const playBtn = document.getElementById('playBtn');
+            const pauseBtn = document.getElementById('pauseBtn');
+            const progressBar = document.getElementById('progressBar');
+            const progress = document.getElementById('progress');
+            const currentTimeEl = document.getElementById('currentTime');
+            const durationEl = document.getElementById('duration');
+
+            let isPlaying = false;
+            let currentTime = 0;
+            const totalDuration = 180; // 3 minutes in seconds
+
+            function formatTime(seconds) {
+                const mins = Math.floor(seconds / 60);
+                const secs = Math.floor(seconds % 60);
+                return `${mins}:${secs.toString().padStart(2, '0')}`;
+            }
+
+            function updatePlayer() {
+                progress.style.width = `${(currentTime / totalDuration) * 100}%`;
+                currentTimeEl.textContent = formatTime(currentTime);
+                durationEl.textContent = formatTime(totalDuration);
+            }
+
+            function playAudio() {
+                isPlaying = true;
+                playBtn.style.display = 'none';
+                pauseBtn.style.display = 'flex';
+
+                // Simulate audio playing
+                const interval = setInterval(() => {
+                    if (isPlaying && currentTime < totalDuration) {
+                        currentTime += 1;
+                        updatePlayer();
+                    } else {
+                        clearInterval(interval);
+                        pauseAudio();
+                    }
+                }, 1000);
+            }
+
+            function pauseAudio() {
+                isPlaying = false;
+                playBtn.style.display = 'flex';
+                pauseBtn.style.display = 'none';
+            }
+
+            if (playBtn && pauseBtn) {
+                playBtn.addEventListener('click', playAudio);
+                pauseBtn.addEventListener('click', pauseAudio);
+
+                progressBar.addEventListener('click', (e) => {
+                    const rect = progressBar.getBoundingClientRect();
+                    const clickX = e.clientX - rect.left;
+                    const width = rect.width;
+                    currentTime = (clickX / width) * totalDuration;
+                    updatePlayer();
+                });
+
+                // Initialize player
+                updatePlayer();
+            }
+        });
+    </script>
+</body>
+
+</html>
